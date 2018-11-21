@@ -35,34 +35,28 @@ def set_initial_value():
         TableName=table_name,
 
         Item={
-            'IncrementID': {'N': str(1)}
+            'IncrementID': {'N': str(1)},
+            'ID' : {'N':str(0)}
         }
     )
 
 
 def get_id():
-    response = dynamo_db.scan(TableName=table_name)
-    x = [item['ID'] for item in response['Items']][0]['N']
-    # print(x)
-    return x
-
-
-def update_id(current_id):
     response = dynamo_db.update_item(
         TableName=table_name,
         Key={
             'IncrementID': {'N': str(1)}
         },
-        UpdateExpression="set ID = :r ",
+        UpdateExpression="set ID = ID + :r ",
         ExpressionAttributeValues={
-            ':r': {'N': str(int(current_id) + 1)}
+            ':r': {'N': str(1)}
         },
         ReturnValues='UPDATED_NEW'
     )
     print(response)
+    return response['Attributes']['ID']['N']
 
 
 # create_table()
-# set_initial_value()
+set_initial_value()
 # get_id()
-# update_id(1)

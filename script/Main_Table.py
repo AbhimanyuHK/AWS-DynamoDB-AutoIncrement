@@ -17,5 +17,4 @@ response = client.put_item(
     }
 )
 
-[Table_Counter.update_id(current_id) for resp in response]
 print(response)
